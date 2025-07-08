@@ -81,7 +81,7 @@ Every element — S3, CloudFront, Route 53, ACM, GitHub — was configured with 
 
 ## 📌 Next Steps
 
-- Add 7 AWS projects (Lambda, SES, SageMaker, CI/CD, Alexa)
+- More AWS projects (Lambda, SES, SageMaker, CI/CD, Alexa)
 - Integrate GitHub Actions for automation
 - Publish architecture stories on LinkedIn and GitHub
 
@@ -107,4 +107,4 @@ Every element — S3, CloudFront, Route 53, ACM, GitHub — was configured with 
 ![Documentation](assets/images/docs/screenshot-documentation.png)
 
 
-© 2025 Omar Sedky. Designed for AWS Cloud Careers.
+© 2025 Omar Sedky.
