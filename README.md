@@ -20,7 +20,7 @@
 
 ## 💡 Why This Project Exists
 
-This portfolio isn't just a static site — it's a **fully deployed AWS cloud project** demonstrating real-world infrastructure thinking. Built for **cost-efficiency**, **security**, and **scalability**, it mirrors production-grade decisions used by cloud architects.
+This portfolio isn't just a static site, it's a **fully deployed AWS cloud project** demonstrating real-world infrastructure thinking. Built for **cost-efficiency**, **security**, and **scalability**, it mirrors production-grade decisions used by cloud architects.
 
 Every element — S3, CloudFront, Route 53, ACM, GitHub — was configured with purpose and precision.
 
