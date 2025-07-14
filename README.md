@@ -98,7 +98,7 @@ Every element — S3, CloudFront, Route 53, ACM, GitHub — was configured with 
 ## 📸 UI Previews
 
 ### 🏠 Homepage
-![Homepage](assets/images/docs/screenshot-home.png)
+![Homepage](assets/images/docs/preview.jpg)
 
 ### 🛠 Behind the Build
 ![Behind the Build](assets/images/docs/screenshot-behind-the-build.png)
