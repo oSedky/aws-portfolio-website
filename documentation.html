@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentation – AWS Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body class="is-preload">
+    <article id="main">
+  <header style="text-align: center; color: #000;">
+    <h2 style="margin-bottom: 0.5em;">Project Documentation</h2>
+    <p style="font-size: 1.1em;">Architecture decisions, configurations, and troubleshooting logs for <strong>sedky.net</strong></p>
+  </header>
+
+
+      <section class="wrapper style2 container" style="background-color: #f5f5f5; padding: 3em 2em; border-radius: 12px;">
+  <div class="row gtr-150">
+    <div class="col-12 col-12-medium">
+      <div style="color: #000; text-align: left;">
+        <h3>1. Route 53 DNS Setup</h3>
+        <p>
+          I registered and managed the <strong>sedky.net</strong> domain using Amazon Route 53.
+          To validate Microsoft 365 email, I added:
+        </p>
+        <ul style="margin-left: 1.5em;">
+          <li><strong>2 CNAME records</strong> for DKIM</li>
+          <li><strong>1 TXT record</strong> for SPF</li>
+          <li><strong>1 TXT record</strong> for DMARC</li>
+        </ul>
+        <p>
+          <strong>Issue encountered:</strong> Route 53 automatically appended <code>.com</code> to the CNAME values provided by Microsoft, causing DKIM validation to fail. The fix was to re-enter the exact value without the suffix.
+        </p>
+        <img src="assets/images/docs/route53-dns-records-sedky-net.png" alt="Route 53 DNS records" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+
+        <h3>2. S3 Static Website Hosting</h3>
+        <p>
+          The portfolio is hosted on Amazon S3 using the static website hosting feature.
+          This approach is:
+        </p>
+        <ul style="margin-left: 1.5em;">
+          <li>Fully serverless</li>
+          <li>Highly cost-effective</li>
+          <li>Eligible under AWS free tier</li>
+        </ul>
+        <p>
+          This allows static content to be delivered globally with no backend server or EC2.
+        </p>
+        <img src="assets/images/docs/s3-static-website-hosting.png" alt="S3 website hosting enabled" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper style2 container" style="background-color: #f5f5f5; padding: 3em 2em; border-radius: 12px; margin-top: 3em;">
+  <div class="row gtr-150">
+    <div class="col-12 col-12-medium">
+      <div style="color: #000; text-align: left;">
+        <h3>3. CloudFront CDN + HTTPS + ACM Certificate</h3>
+
+        <p>
+          To deliver secure, fast-loading content globally, I configured <strong>AWS CloudFront</strong> as the CDN layer for <strong>sedky.net</strong>. It caches my static website across edge locations and provides automatic HTTPS via an SSL certificate from <strong>AWS Certificate Manager (ACM)</strong>.
+        </p>
+
+        <ul style="margin-left: 1.5em;">
+          <li><strong>CloudFront Origin:</strong> The origin is set to the S3 static hosting endpoint</li>
+          <li><strong>Alternate Domain Name (CNAME):</strong> sedky.net</li>
+          <li><strong>SSL/TLS Certificate:</strong> Issued via ACM in <code>us-east-1</code> and attached to CloudFront</li>
+          <li><strong>HTTPS support:</strong> Enforced using <code>TLSv1.2_2021</code> security policy</li>
+        </ul>
+
+        <img src="assets/images/docs/cloudfront-distribution-settings.png" alt="CloudFront CDN Settings" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+
+        <h4>✅ SSL Certificate Status</h4>
+        <p>
+          The SSL certificate was requested through <strong>AWS Certificate Manager</strong> and validated using DNS in Route 53. Once validation completed, the certificate was marked as <strong>"Issued"</strong> and applied to the CloudFront distribution.
+        </p>
+
+        <img src="assets/images/docs/acm-ssl-certificate-issued.png" alt="ACM SSL Certificate Issued" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper style2 container" style="background-color: #f5f5f5; padding: 3em 2em; border-radius: 12px; margin-top: 3em;">
+  <div class="row gtr-150">
+    <div class="col-12 col-12-medium">
+      <div style="color: #000; text-align: left;">
+        <h3>4. DNS + Email Deliverability (SPF, DKIM, DMARC)</h3>
+
+        <p>
+          I configured <strong>Microsoft 365 email</strong> for <code>sedky.net</code> and manually added SPF, DKIM, and DMARC DNS records in Route 53. This ensured high deliverability and proper domain authentication — critical for professional communication and AWS recruiter visibility.
+        </p>
+
+        <ul style="margin-left: 1.5em;">
+          <li><strong>SPF:</strong> TXT record with Outlook protection domain</li>
+          <li><strong>DKIM:</strong> 2 CNAME records (selector1 + selector2)</li>
+          <li><strong>DMARC:</strong> TXT record with policy set to <code>p=quarantine</code></li>
+        </ul>
+
+        <p><strong>Issue encountered:</strong> Route 53 auto-appended <code>.com</code> to the DKIM CNAME values during record entry. The fix was to paste the record value exactly as provided by Microsoft, without any trailing suffix.</p>
+
+        <img src="assets/images/docs/dns-spf-dkim-records.png" alt="SPF DKIM DMARC Records in Route 53" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+
+        <h4>📨 Deliverability Test (mail-tester.com)</h4>
+        <p>
+          I validated all DNS records using <code>mail-tester.com</code> and achieved a perfect score of <strong>10/10</strong>. Headers confirmed alignment across SPF, DKIM, and DMARC.
+        </p>
+
+        <img src="assets/images/docs/mail-tester-score.png" alt="mail-tester.com 10/10" style="max-width:100%; border-radius: 10px; margin: 2em 0;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrapper style3 container" style="padding: 3em 2em; border-radius: 12px; margin-top: 3em;">
+  <div class="row gtr-150">
+    <div class="col-12 col-12-medium">
+      <div style="color: #000; text-align: left;">
+        <h3>5. Architecture Value & GitHub Documentation</h3>
+
+        <p>
+          This project demonstrates not just AWS technical ability, but real-world infrastructure problem-solving:
+        </p>
+
+        <ul style="margin-left: 1.5em;">
+          <li>✅ Precision DNS troubleshooting with DKIM/DMARC resolution</li>
+          <li>✅ Cloud-native architecture (S3 + CloudFront + ACM + Route 53)</li>
+          <li>✅ Enterprise-grade email authentication via Microsoft 365</li>
+          <li>✅ Clean and scalable infrastructure, fully automated and cost-efficient</li>
+        </ul>
+
+        <p style="margin-top: 2em;">
+          Full implementation steps, configurations, and validation notes are publicly documented on GitHub:
+        </p>
+
+        <a href="https://github.com/oSedky/aws-portfolio-website" target="_blank" class="button">📘 View Full GitHub Documentation</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+       <footer style="text-align: center; margin-top: 3em;">
+  <a href="index.html" class="button">← Back to Home</a>
+</footer>
+
+    </article>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
